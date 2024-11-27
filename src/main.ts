@@ -6,7 +6,7 @@ async function bootstrap() {
 
   // Activer CORS pour autoriser les requêtes depuis Angular
   app.enableCors({
-    origin: 'http://localhost:4200', // URL de votre frontend Angular
+    origin: '*', // URL de votre frontend Angular
     methods: 'GET,POST,PUT,DELETE', // Méthodes HTTP autorisées
     credentials: true, // Si des cookies ou des sessions sont utilisés
   });

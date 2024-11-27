@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TodoServiceService } from './Todo/todo-service/todo-service.service';
-import { TodoControllerController } from './Todo/todo-controller/todo-controller.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TacheModule } from './tache/tache.module';
+import { TacheEntity } from './tache/entities/tache.entity/tache.entities';
 
 @Module({
   imports: [
@@ -13,13 +13,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 3306,
       username: 'root',
       password: 'root123',
-      database: 'ToDo',
-      entities: [],
-      synchronize: true,
+      database: 'toDo',
+      entities: [TacheEntity],
+      synchronize: true ,//cad chaque modifié appliqué sera ajouté au bd
       autoLoadEntities: true,
       logging: true
     }),
-  ],  controllers: [AppController, TodoControllerController],
-  providers: [AppService, TodoServiceService],
+    TacheModule,
+  ],  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
