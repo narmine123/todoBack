@@ -32,6 +32,6 @@ createdAt: Date;
     @Column()
     progrès:String;
     @OneToMany(() => SubTask, (subTask) => subTask.tache, { cascade: true })
-  subtasks: SubTask[];
+   subtasks: SubTask[];
 
 }

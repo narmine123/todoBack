@@ -85,6 +85,11 @@ export class TacheService {
         throw new HttpException('Erreur interne du serveur', HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
+    async findAllTasks(): Promise<TacheEntity[]> {
+      return await this.tacheRepository.find({
+        relations: ['subtasks'], // Charger les sous-tâches associées
+      });
+    }
     
     
 }
