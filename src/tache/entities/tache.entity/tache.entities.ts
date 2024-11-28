@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { SubTask } from "./subtask.entity";
 
 
 @Entity('tache')
@@ -30,5 +31,7 @@ createdAt: Date;
     leadTime:Date;
     @Column()
     progrès:String;
+    @OneToMany(() => SubTask, (subTask) => subTask.tache, { cascade: true })
+  subtasks: SubTask[];
 
 }

@@ -3,6 +3,7 @@ import { TacheService } from './tache.service';
 import { TacheEntity } from './entities/tache.entity/tache.entities';
 import { addTacheDTO } from './dto/addTacheDTO';
 import { updateTacheDTO } from './dto/updateTacheDTO';
+import { SubTask } from './entities/tache.entity/subtask.entity';
 
 @Controller('tache')
 export class TacheController {
@@ -50,5 +51,19 @@ export class TacheController {
     async statTacheByPriorité(){
         return await this.tacheService.statTacheByPriorité();
     }
+
+    @Post('subtasks')
+    addSubTask(@Body() subTask: { title: string; taskId: number }): Promise<SubTask> {
+      return this.tacheService.addSubTask(subTask);
+    }
+    
+    @Post('subtasks/debug')
+debugSubTask(@Body() subTask: any): any {
+  console.log('Données reçues :', subTask);
+  return subTask;
+}
+
+
+
 }
 

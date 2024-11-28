@@ -17,7 +17,8 @@ import { TacheEntity } from './tache/entities/tache.entity/tache.entities';
       entities: [TacheEntity],
       synchronize: true ,//cad chaque modifié appliqué sera ajouté au bd
       autoLoadEntities: true,
-      logging: true
+      logging: true,
+      dropSchema: true, // Supprime les tables avant de recréer le schéma
     }),
     TacheModule,
   ],  controllers: [AppController],

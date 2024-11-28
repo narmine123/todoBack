@@ -1,16 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TacheEntity } from './entities/tache.entity/tache.entities';
 import { Repository } from 'typeorm';
 import { addTacheDTO } from './dto/addTacheDTO';
 import { updateTacheDTO } from './dto/updateTacheDTO';
+import { SubTask } from './entities/tache.entity/subtask.entity';
 
 
 @Injectable()
 export class TacheService {
     constructor(
     @InjectRepository(TacheEntity)
-    private tacheRepository : Repository<TacheEntity>
+    private tacheRepository : Repository<TacheEntity>,
+    @InjectRepository(SubTask)
+    private subTaskRepository: Repository<SubTask>,
 ){}
     async getTaches(): Promise<TacheEntity[]>{
         return await  this.tacheRepository.find()
@@ -61,9 +64,37 @@ export class TacheService {
         return await qb.getRawMany();
     }
 
-  
+     // Fonction pour ajouter une sous-tâche à une tâche existante
+     async addSubTask(subTask: { title: string; taskId: number }): Promise<SubTask> {
+      try {
+        // Trouver la tâche par l'ID
+        const tache = await this.tacheRepository.findOne({ where: { id: subTask.taskId } });
+        if (!tache) {
+          console.error(`Tâche avec ID ${subTask.taskId} non trouvée.`);
+          throw new HttpException('Tâche non trouvée', HttpStatus.NOT_FOUND);
+        }
+    
+        // Créer et enregistrer la nouvelle sous-tâche
+        const newSubTask = this.subTaskRepository.create({
+          title: subTask.title,
+          tache, // Associer la tâche trouvée
+        });
+        return await this.subTaskRepository.save(newSubTask);
+      } catch (error) {
+        console.error('Erreur dans la fonction addSubTask :', error);
+        throw new HttpException('Erreur interne du serveur', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
     
     
 }
+         
+      
+
+
+  
+    
+    
+
 
 //a fonction asynchrone getTaches() attend effectivement la réponse avant de retourner la valeur
