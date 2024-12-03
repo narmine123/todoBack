@@ -9,7 +9,7 @@ export class TacheEntity {
     id: number;
     @Column()
     title: string;
-    @Column()
+    @Column({ type: 'text', nullable: true })
     description: string;
 @CreateDateColumn()
 createdAt: Date;
