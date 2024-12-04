@@ -11,6 +11,8 @@ export class Skill{
     objectif: string;
 
     @Column()
-
     niveauAct:number;
+
+    @Column({ default: 0 }) // Initialise le progrès à 0%
+    progress: number; // Progrès en pourcentage (0 à 100)
 }

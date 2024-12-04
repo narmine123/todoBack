@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Body, Injectable, NotFoundException, Param, Patch } from '@nestjs/common';
 import { Skill } from 'src/tache/entities/skill.entity/skill.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,6 +49,52 @@ export class SkillService {
         return await this.skillRepository.remove(skilltoRemove);
     }
 
+
+    // Récupérer toutes les compétences
+  async getAllSkills(): Promise<Skill[]> {
+    return this.skillRepository.find();
+  }
+
+
+  /*async updateProgress(skillId: number, niveauAct: number, progress: number): Promise<Skill> {
+    try {
+      const skill = await this.skillRepository.findOneBy({ id: skillId });
+      if (!skill) {
+        throw new NotFoundException('Compétence non trouvée');
+      }
+  
+      // Mise à jour du progrès
+      skill.progress = progress;
+  
+      // Si le progrès atteint 100%, on incrémente le niveau
+      if (progress === 100) {
+        skill.niveauAct = niveauAct + 1;  // Incrémenter le niveau actuel
+      }
+  
+      // Enregistrer la compétence mise à jour dans la base de données
+      const updatedSkill = await this.skillRepository.save(skill);
+      console.log('Skill après mise à jour: ', updatedSkill);  // Vérifier l'entité sauvegardée
+      return updatedSkill;
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du progrès: ', error);
+      throw error;  // Re-throw the error to handle it in the controller if needed
+    }
+  }*/
+    async updateProgress(skillId: number, niveauAct: number, progress: number): Promise<Skill> {
+        const skill = await this.skillRepository.findOneBy({ id: skillId });
+        if (!skill) {
+          throw new NotFoundException('Compétence non trouvée');
+        }
+      
+        // Mise à jour de la compétence avec progress et niveauAct
+        skill.progress = progress;
+        skill.niveauAct = niveauAct;  // Assurez-vous que 'niveauAct' est bien mis à jour
+        
+        return this.skillRepository.save(skill);  // Sauvegarde la compétence mise à jour
+      }
+      
+  
+  
 }
 
     

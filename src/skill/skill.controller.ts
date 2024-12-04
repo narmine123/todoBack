@@ -9,10 +9,7 @@ import { updateSkillDTO } from 'src/tache/dto/updateSkillDTO';
 @Controller('skill')
 export class SkillController {
     constructor(private skillService: SkillService){}
-    @Get()
-    async getAllSkills(): Promise<Skill[]>{
-        return await this.skillService.getSkills();
-    }
+    
     
     
 
@@ -35,9 +32,25 @@ export class SkillController {
         ){
             return await this.skillService.removeSkill(id);
         }
-       
-        
 
+
+      
+        @Get()
+        async getAllSkills(): Promise<Skill[]>{
+        return await this.skillService.getSkills();
+    }
+      
+    
+  @Patch(':id/progress')
+  updateProgress(
+    @Param('id') id: number,
+    @Body('niveauAct') niveauAct: number, // Inclure niveauAct dans le corps de la requête
+    @Body('progress') progress: number,
+  ) {
+    return this.skillService.updateProgress(id, niveauAct, progress);
+  
+  
+  }
 
     
 }
