@@ -81,18 +81,37 @@ export class SkillService {
     }
   }*/
     async updateProgress(skillId: number, niveauAct: number, progress: number): Promise<Skill> {
-        const skill = await this.skillRepository.findOneBy({ id: skillId });
-        if (!skill) {
+      console.log('Méthode updateProgress appelée avec skillId:', skillId, 'niveauAct:', niveauAct, 'progress:', progress);
+  
+      // Récupérer la compétence depuis la base de données
+      const skill = await this.skillRepository.findOneBy({ id: skillId });
+  
+      if (!skill) {
           throw new NotFoundException('Compétence non trouvée');
-        }
-      
-        // Mise à jour de la compétence avec progress et niveauAct
-        skill.progress = progress;
-        skill.niveauAct = niveauAct;  // Assurez-vous que 'niveauAct' est bien mis à jour
-        
-        return this.skillRepository.save(skill);  // Sauvegarde la compétence mise à jour
       }
-      
+  
+      // Mise à jour des champs progress et niveauAct
+      skill.progress = progress;
+      skill.niveauAct = niveauAct;
+  
+      // Vérification et définition des dates
+      if (progress === 10 && !skill.DateDebut) {
+          skill.DateDebut = new Date();
+          console.log('Date de début définie à :', skill.DateDebut);
+      }
+  
+      if (progress === 100 && !skill.DateFin) {
+          skill.DateFin = new Date();
+          console.log('Date de fin définie à :', skill.DateFin);
+      }
+  
+      // Sauvegarder la compétence mise à jour dans la base de données
+      const updatedSkill = await this.skillRepository.save(skill);
+      console.log('Compétence mise à jour et sauvegardée :', updatedSkill);
+  
+      return updatedSkill;
+  }
+  
   
   
 }

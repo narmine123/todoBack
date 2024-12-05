@@ -15,4 +15,18 @@ export class Skill{
 
     @Column({ default: 0 }) // Initialise le progrès à 0%
     progress: number; // Progrès en pourcentage (0 à 100)
+    @Column()
+
+    cycleTime:string;
+    @Column()
+
+    LeadTime:string;
+    @Column()
+
+    DateIdee:Date;
+
+    @Column({ type: 'timestamp', nullable: true })
+    DateDebut:Date;
+    @Column({ type: 'timestamp', nullable: true })
+    DateFin:Date;
 }
